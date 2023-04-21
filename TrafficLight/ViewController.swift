@@ -10,38 +10,25 @@ import UIKit
 class ViewController: UIViewController {
     var activeView: UIView?
     
-    @IBOutlet var redView: UIView!
-    @IBOutlet var orangeView: UIView!
-    @IBOutlet var greenView: UIView!
+    @IBOutlet var views: [UIView]!
     @IBOutlet var startButton: UIButton!
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
         
-        redView.layer.cornerRadius = redView.frame.height / 2
-        orangeView.layer.cornerRadius = redView.frame.height / 2
-        greenView.layer.cornerRadius = redView.frame.height / 2
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        views.forEach { $0.layer.cornerRadius = $0.frame.height / 2 }
         startButton.layer.cornerRadius = 20
     }
     
     @IBAction func startButtonTapped() {
         startButton.setTitle("NEXT", for: .normal)
-    
-        switch activeView {
-        case redView:
-            redView.alpha = 0.3
-            activeView = orangeView
+        
+        if activeView == nil {
+            activeView = views.first
             activeView?.alpha = 1
-        case orangeView:
-            orangeView.alpha = 0.3
-            activeView = greenView
-            activeView?.alpha = 1
-        case greenView:
-            greenView.alpha = 0.3
-            activeView = redView
-            activeView?.alpha = 1
-        default:
-            activeView = redView
+        } else {
+            activeView?.alpha = 0.3
+            activeView = views[(views.firstIndex(of: activeView!)! + 1) % views.count]
             activeView?.alpha = 1
         }
     }
