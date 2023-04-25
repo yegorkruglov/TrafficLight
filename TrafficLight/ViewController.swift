@@ -7,8 +7,8 @@
 
 import UIKit
 
-class ViewController: UIViewController {
-    var activeView: UIView?
+final class ViewController: UIViewController {
+    private var activeView: UIView?
     
     @IBOutlet var views: [UIView]!
     @IBOutlet var startButton: UIButton!
@@ -21,7 +21,9 @@ class ViewController: UIViewController {
     }
     
     @IBAction func startButtonTapped() {
-        startButton.setTitle("NEXT", for: .normal)
+        if startButton.currentTitle != "NEXT" {
+            startButton.setTitle("NEXT", for: .normal)
+        }
         
         if activeView == nil {
             activeView = views.first
